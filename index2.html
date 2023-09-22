@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form HTML generato da JavaScript</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var form = document.createElement('form');
+            form.action = '#';
+            form.method = 'post';
+
+            var label1 = document.createElement('label');
+            label1.for = 'text_field';
+            label1.textContent = 'Inserisci nome:';
+            form.appendChild(label1);
+
+            var input1 = document.createElement('input');
+            input1.type = 'text';
+            input1.id = 'text_field';
+            input1.name = 'text_field';
+            input1.required = true;
+            form.appendChild(input1);
+
+            var br1 = document.createElement('br');
+            form.appendChild(br1);
+
+            document.body.appendChild(form);
+        });
+    </script>
+</head>
+<body>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form HTML</title>
+</head>
+<body>
+    <form action="#" method="post">
+        <label for="text_field">Inserisci il tuo nome:</label>
+        <input type="text" id="text_field" name="text_field" required><br><br>
+
+        <label for="select_field">che linguaggio preferisci?:</label>
+        <select id="select_field" name="select_field" required>
+            <option value="opzione1">Java</option>
+            <option value="opzione2">C++</option>
+            <option value="opzione3">Python</option>
+        </select><br><br>
+
+        <label>Quanti anni hai?:</label>
+        <input type="checkbox" id="checkbox_field" name="checkbox_field" value="valore1"> 18+
+        <input type="checkbox" name="checkbox_field" value="valore2"> 25+
+        <input type="checkbox" name="checkbox_field" value="valore3"> 50+<br><br>
+
+        <label>Che indirizzo fai?:</label>
+        <input type="radio" id="radio_field1" name="radio_field" value="valore1"> Informatica
+        <input type="radio" id="radio_field2" name="radio_field" value="valore2"> Chimica
+        <input type="radio" id="radio_field3" name="radio_field" value="valore3"> Meccanica<br><br>
+
+        <label for="textarea_field">scrivi un commento:</label><br>
+        <textarea id="textarea_field" name="textarea_field" required></textarea><br><br>
+
+        <input type="submit" value="Invia">
+    </form>
+</body>
+</html>

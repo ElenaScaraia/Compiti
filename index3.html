@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form HTML generato da JSON</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var formData = [
+                {
+                    "type": "text",
+                    "label": "Nome:",
+                    "id": "text_field",
+                    "name": "text_field",
+                    "required": true
+                },
+                {
+                    "type": "select",
+                    "label": "che scuola fai?:",
+                    "id": "select_field",
+                    "name": "select_field",
+                    "options": [
+                        {"value": "opzione1", "text": "ITIS"},
+                        {"value": "opzione2", "text": "IPSIA"},
+                        {"value": "opzione3", "text": "Bertolucci"}
+                    ],
+                    "required": true
+                },
+            ];
+
+            var form = document.createElement('form');
+            form.action = '#';
+            form.method = 'post';
+
+            formData.forEach(function(fieldData) {
+                var label = document.createElement('label');
+                label.for = fieldData.id;
+                label.textContent = fieldData.label;
+                form.appendChild(label);
+
+                var input;
+                if (fieldData.type === 'select') {
+                    input = document.createElement('select');
+                    fieldData.options.forEach(function(option) {
+                        var optionElement = document.createElement('option');
+                        optionElement.value = option.value;
+                        optionElement.text = option.text;
+                        input.appendChild(optionElement);
+                    });
+                } else if (fieldData.type === 'textarea') {
+                    input = document.createElement('textarea');
+                } else {
+                    input = document.createElement('input');
+                    input.type = fieldData.type;
+                }
+
+                input.id = fieldData.id;
+                input.name = fieldData.name;
+
+                if (fieldData.required) {
+                    input.required = true;
+                }
+
+                form.appendChild(input);
+
+                var br = document.createElement('br');
+                form.appendChild(br);
+            });
+
+            var submitButton = document.createElement('input');
+            submitButton.type = 'submit';
+            submitButton.value = 'Invia';
+            form.appendChild(submitButton);
+
+            document.body.appendChild(form);
+        });
+    </script>
+</head>
+<body>
+</body>
+</html>
