@@ -1,0 +1,25 @@
+INSERT INTO prodotti (nome,quantita,prezzo, id_categoria,id_opzioni) VALUES
+	('Cassetto Bianco Semplice', 10, 20, 1,null),
+    ('Cassetto Nero Semplice', 10, 20, 1,null),
+    ('Cassetto Marrone Semplice', 10, 20, 1,null),
+    ('Mensola Bianca Semplice', 10, 20, 2,null),
+    ('Mensola Nera Semplice', 10, 20, 2,null),
+    ('Mensola Marrone Semplice', 10, 20, 2,null),
+    ('Puff Bianco Semplice', 10, 20, 3,null),
+    ('Puff Nero Semplice', 10, 20, 3,null),
+    ('Puff Marrone Semplice', 10, 20, 3,null),
+    ('Specchiera Bianca Semplice', 10, 20, 4,null),
+    ('Specchiera Nera Semplice', 10, 20, 4,null),
+    ('Specchiera Marrone Semplice', 10, 20, 4,null),
+    ('Set Bianco Semplice', 10, 20, 5,null),
+    ('Set Nero Semplice', 10, 20, 5,null),
+    ('Set Marrone Semplice', 10, 20, 5,null),
+    ('Libreria Bianca Semplice', 10, 20, 6,null),
+    ('Libreria Nera Semplice', 10, 20, 6,null),
+    ('Libreria Marrone Semplice', 10, 20, 6,null),
+    ('Armadio Bianco Semplice', 10, 20, 7,null),
+    ('Armadio Nero Semplice', 10, 20, 7,null),
+    ('Armadio Marrone Semplice', 10, 20, 7,null),
+    
+
+
