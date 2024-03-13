@@ -1,0 +1,19 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Preferences Summary
+    link(rel="stylesheet", href="styles.css")
+  body
+    h1 Preferences Summary
+    table
+      thead
+        tr
+          th Movie
+          th Average Rating
+      tbody
+        each movie in movies
+          tr
+            td= movie.title
+            td= movie.averageRating
