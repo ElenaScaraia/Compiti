@@ -1,0 +1,15 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Riepilogo dei quiz
+  body
+    h1 Riepilogo dei quiz
+    if students.length > 0
+      ol
+        each student in students
+          li= student.name + ' ' + student.surname + ' - Punteggio: ' + student.score
+    else
+      p Nessun quiz è stato svolto al momento.
+

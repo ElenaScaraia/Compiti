@@ -1,0 +1,37 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Inserimento dati per il quiz
+  body
+    h1 Inserimento dati per il quiz
+    form(action="/submit", method="post")
+      label(for="name") Nome:
+      input(type="text", id="name", name="name", required)
+      br
+      label(for="surname") Cognome:
+      input(type="text", id="surname", name="surname", required)
+      br
+      label Domanda 1: Quanto vive in media un cane?
+      select(name="q1")
+        option(value="5-8 anni") 5-8 anni
+        option(value="8-12 anni") 8-12 anni
+        option(value="12-15 anni") 12-15 anni
+        option(value="15-20 anni") 15-20 anni
+      br
+      label Domanda 2: Qual è il gatto più grande?
+      select(name="q2")
+        option(value="Maine Coon") Maine Coon
+        option(value="Persiano") Persiano
+        option(value="Sphynx") Sphynx
+        option(value="Ragdoll") Ragdoll
+      br
+      label Domanda 3: Come si chiama la razza di gatto senza pelo?
+      select(name="q3")
+        option(value="Sphynx") Sphynx
+        option(value="Siamese") Siamese
+        option(value="Maine Coon") Maine Coon
+        option(value="Persiano") Persiano
+      br
+      input(type="submit", value="Invia")
