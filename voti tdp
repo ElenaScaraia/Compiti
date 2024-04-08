@@ -1,0 +1,102 @@
+const express = require('express');
+const path = require('path');
+const bodyParser = require('body-parser');
+const app = express();
+
+// Imposta Pug come motore di template
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
+// Middleware per il parsing dei dati POST
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Inizializza dati dei voti
+let votes = {};
+
+// Pagina Home
+app.get('/', (req, res) => {
+  res.render('index');
+});
+
+// Pagina Inserimento Preferenze
+app.get('/inserimento', (req, res) => {
+  res.render('inserimento', { candidates: ['Candidato1', 'Candidato2', 'Candidato3'] });
+});
+
+app.post('/inserimento', (req, res) => {
+  const { nome, cognome, email, candidato } = req.body;
+  
+  if (email in votes) {
+    res.send('Hai già espresso il voto.');
+  } else {
+    if (!votes[candidato]) {
+      votes[candidato] = 0;
+    }
+    votes[candidato]++;
+    res.send(`Voto registrato per ${candidato}. Numero di voti: ${votes[candidato]}`);
+  }
+});
+
+// Pagina Riepilogo Preferenze
+app.get('/riepilogo', (req, res) => {
+  const sortedCandidates = Object.entries(votes)
+    .sort((a, b) => b[1] - a[1])
+    .map(([candidate, score]) => ({ candidate, score }));
+
+  res.render('riepilogo', { candidates: sortedCandidates });
+});
+
+// Avvio del server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server avviato sulla porta ${PORT}`);
+});
+
+// index.pug
+
+doctype html
+html
+  head
+    title Elezioni Segretario
+  body
+    h1 Benvenuto!
+    a(href='/inserimento') Inserisci le preferenze
+    br
+    a(href='/riepilogo') Riepilogo delle preferenze
+
+//inserimento.pug
+
+doctype html
+html
+  head
+    title Inserimento Preferenze
+  body
+    h1 Inserimento Preferenze
+    form(action='/inserimento' method='post')
+      label(for='nome') Nome:
+      input(type='text' name='nome' required)
+      br
+      label(for='cognome') Cognome:
+      input(type='text' name='cognome' required)
+      br
+      label(for='email') Email:
+      input(type='email' name='email' required)
+      br
+      label(for='candidato') Candidato:
+      select(name='candidato' required)
+        each candidate in candidates
+          option(value=candidate)= candidate
+      br
+      button(type='submit') Vota
+// riepilogo pug
+
+doctype html
+html
+  head
+    title Riepilogo Preferenze
+  body
+    h1 Riepilogo Preferenze
+    each candidate in candidates
+      p= `${candidate.candidate}: ${candidate.score} voti`
+
