@@ -1,0 +1,128 @@
+const express = require('express');
+const path = require('path');
+const bodyParser = require('body-parser');
+const fs = require('fs');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Imposta Pug come motore di template
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
+// Middleware per il parsing dei dati POST
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Dati delle stanze
+const stanze = {
+  singola: { nome: 'Singola', disponibili: 5 },
+  coppia: { nome: 'Coppia', disponibili: 10 },
+  famiglia: { nome: 'Famiglia', disponibili: 3 }
+};
+
+// Pagina Home
+app.get('/', (req, res) => {
+  res.render('index', { stanze });
+});
+
+// Pagina di Prenotazione
+app.get('/prenota/:tipoStanza', (req, res) => {
+  const { tipoStanza } = req.params;
+  if (stanze[tipoStanza] && stanze[tipoStanza].disponibili > 0) {
+    res.render('prenotazione', { tipoStanza });
+  } else {
+    res.send(`Spiacenti, le stanze di tipo ${tipoStanza} sono esaurite.`);
+  }
+});
+
+// Gestione della prenotazione
+app.post('/prenota/:tipoStanza', (req, res) => {
+  const { tipoStanza } = req.params;
+  const { nome, cognome, email, numStanze, colazione, pranzo, cena } = req.body;
+
+  const costoStanza = 100; // Costo base della stanza
+  let costoOpzionali = 0;
+
+  if (colazione) costoOpzionali += 20;
+  if (pranzo) costoOpzionali += 30;
+  if (cena) costoOpzionali += 40;
+
+  const costoTotale = costoStanza * numStanze + costoOpzionali;
+
+  if (stanze[tipoStanza].disponibili >= numStanze) {
+    // Registra la prenotazione
+    const prenotazione = { nome, cognome, email, tipoStanza, numStanze, costoTotale };
+    const prenotazioniFilePath = path.join(__dirname, 'data', 'prenotazioni.json');
+    const prenotazioni = JSON.parse(fs.readFileSync(prenotazioniFilePath, 'utf8'));
+    prenotazioni.push(prenotazione);
+    fs.writeFileSync(prenotazioniFilePath, JSON.stringify(prenotazioni, null, 2));
+
+    // Aggiorna il numero di stanze disponibili
+    stanze[tipoStanza].disponibili -= numStanze;
+
+    res.send(`Prenotazione avvenuta con successo! Costo totale: ${costoTotale}€.`);
+  } else {
+    res.send(`Spiacenti, rimangono solo ${stanze[tipoStanza].disponibili} stanze di tipo ${tipoStanza}.`);
+  }
+});
+
+// Avvio del server
+app.listen(PORT, () => {
+  console.log(`Server avviato sulla porta ${PORT}`);
+});
+
+
+//index.pug
+
+doctype html
+html
+  head
+    title Hotel Topolino - Prenotazioni Pasqua
+  body
+    h1 Benvenuti all'Hotel Topolino
+    each tipoStanza in Object.keys(stanze)
+      if stanze[tipoStanza].disponibili > 0
+        a(href=`/prenota/${tipoStanza}`)= `Prenota ${stanze[tipoStanza].nome} (${stanze[tipoStanza].disponibili} disponibili)`
+      else
+        p= `Stanze di tipo ${stanze[tipoStanza].nome} esaurite`
+
+// prenotazione.pug
+
+doctype html
+html
+  head
+    title Prenotazione Stanza
+  body
+    h1 Prenota la stanza di tipo #{tipoStanza}
+    form(action=`/prenota/${tipoStanza}` method='post')
+      label(for='nome') Nome:
+      input(type='text' name='nome' required)
+      br
+      label(for='cognome') Cognome:
+      input(type='text' name='cognome' required)
+      br
+      label(for='email') Email:
+      input(type='email' name='email' required)
+      br
+      label(for='numStanze') Numero di Stanze:
+      input(type='number' name='numStanze' min='1' required)
+      br
+      label Opzionali:
+      br
+      input(type='checkbox' name='colazione') Colazione (+€20)
+      input(type='checkbox' name='pranzo') Pranzo (+€30)
+      input(type='checkbox' name='cena') Cena (+€40)
+      br
+      button(type='submit') Prenota
+
+//STRUTTURA
+hotel-topolino
+├── public
+│   └── styles.css  // File CSS per lo stile delle pagine
+├── views
+│   ├── index.pug  // Homepage
+│   └── prenotazione.pug  // Pagina di prenotazione della stanza
+├── server.js  // Il file principale del server
+└── data
+    └── prenotazioni.json  // File per memorizzare le prenotazioni
